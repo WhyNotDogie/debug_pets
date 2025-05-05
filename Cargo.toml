@@ -2,6 +2,11 @@
 name = "debug_pets"
 version = "0.1.0"
 edition = "2024"
+license = "MIT"
+description = "Debug pets is a crate that adds the cutest debugging tools you have ever seen."
+repository = "https://github.com/WhyNotDogie/debug_pets"
+readme = "README.md"
+keywords = ["debug", "cute", "api", "rust", "utility", "logging", "log", "library", "tool"]
 
 [features]
 default = ["random"]
