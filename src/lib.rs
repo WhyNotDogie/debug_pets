@@ -5,7 +5,7 @@
 /// ```
 /// use debug_pets::prelude::*;
 /// 
-/// static DOG: PetDebugger<pets::dog, DefaultFormatter> = PetDebugger::new()
+/// static DOG: PetDebugger<pets::Dog, DefaultPrinter> = PetDebugger::new();
 /// 
 /// fn main() {
 ///     DOG.got_here("main function")
@@ -42,8 +42,8 @@ impl<P: Pet, R: Printer> PetDebugger<P, R> {
         }
     }
 
-    pub fn got_here(&self, location: &str) {
-        R::print(&self.dailog_got_here(location));
+    pub fn got_here<T: Into<String>>(&self, location: T) {
+        R::print(&self.dailog_got_here(&*location.into()));
     }
 }
 
