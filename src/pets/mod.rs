@@ -38,7 +38,7 @@ macro_rules! twodialoganimal {
 }
 
 twodialoganimal!{Cat, "Meow at {}!", "Purr at {}!"}
-twodialoganimal!{Fox, "?? at {}!", "[redacted] at {}!"}
+twodialoganimal!{Fox, "?? at {}!", "[REDACTED] at {}!"}
 twodialoganimal!{Cow, "Moo at {}!", "Bell rang at {}!"}
 twodialoganimal!{Pig, "Oink at {}!", "Rolling in mud at {}!"}
 twodialoganimal!{Dog, "Woof at {}!", "Bark at {}!"}
