@@ -32,3 +32,31 @@ impl Pet for Dog {
         }
     }
 }
+
+pub struct Cat {
+    variant: AtomicU8
+}
+
+impl Pet for Cat {
+    #[cfg(not(feature="random"))]
+    fn dialog_got_here(&self, location: &str) -> String {
+        if self.variant.fetch_add(1, Ordering::Relaxed) % 2u8 == 0 {
+            format!("Meowed at {}!", location)
+        } else {
+            format!("Purred at {}!", location)
+        }
+    }
+    #[cfg(feature="random")]
+    fn dialog_got_here(&self, location: &str) -> String {
+        if self.variant.fetch_add(random_range(0u8..4u8), Ordering::Relaxed) % 2u8 == 0 {
+            format!("Meowed at {}!", location)
+        } else {
+            format!("Purred at {}!", location)
+        }
+    }
+    fn new() -> Self {
+        Self {
+            variant: AtomicU8::new(0)
+        }
+    }
+}
