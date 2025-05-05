@@ -5,114 +5,41 @@ use rand::random_range;
 
 use std::sync::atomic::{AtomicU8, Ordering};
 
-pub struct Dog {
-    variant: AtomicU8
+macro_rules! twodialoganimal {
+    ($name:ident, $dialog1:literal, $dialog2:literal) => {
+        pub struct $name {
+            variant: AtomicU8
+        }
+        
+        impl Pet for $name {
+            #[cfg(not(feature="random"))]
+            fn dialog_got_here(&self, location: &str) -> String {
+                if self.variant.fetch_add(1, Ordering::Relaxed) % 2u8 == 0 {
+                    format!($dialog1, location)
+                } else {
+                    format!($dialog2, location)
+                }
+            }
+            #[cfg(feature="random")]
+            fn dialog_got_here(&self, location: &str) -> String {
+                if self.variant.fetch_add(random_range(0u8..4u8), Ordering::Relaxed) % 2u8 == 0 {
+                    format!($dialog1, location)
+                } else {
+                    format!($dialog2, location)
+                }
+            }
+            fn new() -> Self {
+                Self {
+                    variant: AtomicU8::new(0)
+                }
+            }
+        }
+    };
 }
 
-impl Pet for Dog {
-    #[cfg(not(feature="random"))]
-    fn dialog_got_here(&self, location: &str) -> String {
-        if self.variant.fetch_add(1, Ordering::Relaxed) % 2u8 == 0 {
-            format!("Woofed at {}!", location)
-        } else {
-            format!("Barked at {}!", location)
-        }
-    }
-    #[cfg(feature="random")]
-    fn dialog_got_here(&self, location: &str) -> String {
-        if self.variant.fetch_add(random_range(0u8..4u8), Ordering::Relaxed) % 2u8 == 0 {
-            format!("Woofed at {}!", location)
-        } else {
-            format!("Barked at {}!", location)
-        }
-    }
-    fn new() -> Self {
-        Self {
-            variant: AtomicU8::new(0)
-        }
-    }
-}
-
-pub struct Cat {
-    variant: AtomicU8
-}
-
-impl Pet for Cat {
-    #[cfg(not(feature="random"))]
-    fn dialog_got_here(&self, location: &str) -> String {
-        if self.variant.fetch_add(1, Ordering::Relaxed) % 2u8 == 0 {
-            format!("Meowed at {}!", location)
-        } else {
-            format!("Purred at {}!", location)
-        }
-    }
-    #[cfg(feature="random")]
-    fn dialog_got_here(&self, location: &str) -> String {
-        if self.variant.fetch_add(random_range(0u8..4u8), Ordering::Relaxed) % 2u8 == 0 {
-            format!("Meowed at {}!", location)
-        } else {
-            format!("Purred at {}!", location)
-        }
-    }
-    fn new() -> Self {
-        Self {
-            variant: AtomicU8::new(0)
-        }
-    }
-}
-
-pub struct Fox {
-    variant: AtomicU8
-}
-
-impl Pet for Fox {
-    #[cfg(not(feature="random"))]
-    fn dialog_got_here(&self, location: &str) -> String {
-        if self.variant.fetch_add(1, Ordering::Relaxed) % 2u8 == 0 {
-            format!("?? at {}!", location)
-        } else {
-            format!("?? at {}!", location)
-        }
-    }
-    #[cfg(feature="random")]
-    fn dialog_got_here(&self, location: &str) -> String {
-        if self.variant.fetch_add(random_range(0u8..4u8), Ordering::Relaxed) % 2u8 == 0 {
-            format!("?? at {}!", location)
-        } else {
-            format!("?? at {}!", location)
-        }
-    }
-    fn new() -> Self {
-        Self {
-            variant: AtomicU8::new(0)
-        }
-    }
-}
-
-pub struct Cow {
-    variant: AtomicU8
-}
-
-impl Pet for Cow {
-    #[cfg(not(feature="random"))]
-    fn dialog_got_here(&self, location: &str) -> String {
-        if self.variant.fetch_add(1, Ordering::Relaxed) % 2u8 == 0 {
-            format!("Moo at {}!", location)
-        } else {
-            format!("Bell rang at {}!", location)
-        }
-    }
-    #[cfg(feature="random")]
-    fn dialog_got_here(&self, location: &str) -> String {
-        if self.variant.fetch_add(random_range(0u8..4u8), Ordering::Relaxed) % 2u8 == 0 {
-            format!("Moo at {}!", location)
-        } else {
-            format!("Bell rang at {}!", location)
-        }
-    }
-    fn new() -> Self {
-        Self {
-            variant: AtomicU8::new(0)
-        }
-    }
-}
+twodialoganimal!{Cat, "Meow at {}!", "Purr at {}!"}
+twodialoganimal!{Fox, "?? at {}!", "?? at {}!"}
+twodialoganimal!{Cow, "Moo at {}!", "Bell rang at {}!"}
+twodialoganimal!{Pig, "Oink at {}!", "Rolling in mud at {}!"}
+twodialoganimal!{Dog, "Woof at {}!", "Bark at {}!"}
+twodialoganimal!{Chihuahua, "Yap at {}!", "Urf at {}!"}
