@@ -1,3 +1,3 @@
-pub use crate::pets::Dog;
+pub use crate::pets;
 pub use crate::PetDebugger;
 pub use crate::printer::DefaultPrinter;
